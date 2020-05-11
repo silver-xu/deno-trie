@@ -1,6 +1,6 @@
-export interface Node<T> {
-  parent?: Node<T>;
-  children: { [key: string]: Node<T> };
+export interface TrieNode<T> {
+  parent?: TrieNode<T>;
+  children: { [key: string]: TrieNode<T> };
   key?: string;
   value?: T;
   ignoreCasing: boolean;

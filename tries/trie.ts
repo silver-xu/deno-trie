@@ -1,4 +1,4 @@
-import { Node, TrieConfig, SearchResult } from './types.ts';
+import { TrieNode, TrieConfig, SearchResult } from './types.ts';
 
 /**
  * Returns a new root node of the trie
@@ -11,7 +11,7 @@ export const init = <T>(
   trieConfig: TrieConfig = {
     ignoreCasing: true,
   },
-): Node<T> => ({
+): TrieNode<T> => ({
   children: {},
   ignoreCasing: trieConfig.ignoreCasing,
 });
@@ -24,7 +24,7 @@ export const init = <T>(
  * @param key - the key to add to the trie
  * @param value - the value to add to the trie
  */
-export const add = <T>(node: Node<T>, key: string, value: T): void => {
+export const add = <T>(node: TrieNode<T>, key: string, value: T): void => {
   addRecursively(node, key, key, value);
 };
 
@@ -36,7 +36,7 @@ export const add = <T>(node: Node<T>, key: string, value: T): void => {
  * @param key - the key used to retrieve from the trie
  * @returns - the value if key exists, undefine if not
  */
-export const get = <T>(node: Node<T>, key: string): T | undefined => {
+export const get = <T>(node: TrieNode<T>, key: string): T | undefined => {
   if (key.length === 0) {
     return node.value;
   }
@@ -57,11 +57,11 @@ export const get = <T>(node: Node<T>, key: string): T | undefined => {
  * @param keyword - the keyword used to search from the trie
  * @returns - the search result with their corresponding keys
  */
-export const search = <T>(node: Node<T>, keyword: string): SearchResult<T>[] =>
+export const search = <T>(node: TrieNode<T>, keyword: string): SearchResult<T>[] =>
   searchRecursively(node, keyword, keyword).map(({ key, value }) => ({ key, value }));
 
 const searchRecursively = <T>(
-  node: Node<T>,
+  node: TrieNode<T>,
   keyword: string,
   originalKeyword: string,
 ): SearchResult<T>[] => {
@@ -91,7 +91,12 @@ const searchRecursively = <T>(
   return results;
 };
 
-const addRecursively = <T>(node: Node<T>, key: string, originalKey: string, value: T): Node<T> => {
+const addRecursively = <T>(
+  node: TrieNode<T>,
+  key: string,
+  originalKey: string,
+  value: T,
+): TrieNode<T> => {
   if (key.length === 0) {
     node.key = originalKey;
     node.value = value;
@@ -117,7 +122,7 @@ const addRecursively = <T>(node: Node<T>, key: string, originalKey: string, valu
 };
 
 const applyStartWildcard = <T>(
-  node: Node<T>,
+  node: TrieNode<T>,
   cultureAwareKeyword: string,
   keyword: string,
   originalKeyword: string,
@@ -131,7 +136,7 @@ const applyStartWildcard = <T>(
   return childrenResults;
 };
 
-const applyEndWildcard = <T>(node: Node<T>): SearchResult<T>[] => {
+const applyEndWildcard = <T>(node: TrieNode<T>): SearchResult<T>[] => {
   let fetchResult: SearchResult<T>[] = [];
 
   const { key, value } = node;
@@ -148,7 +153,7 @@ const applyEndWildcard = <T>(node: Node<T>): SearchResult<T>[] => {
 };
 
 const matchNext = <T>(
-  matchChild: Node<T>,
+  matchChild: TrieNode<T>,
   keyword: string,
   originalKeyword: string,
 ): SearchResult<T>[] => {
@@ -163,5 +168,5 @@ const matchNext = <T>(
   return result;
 };
 
-const getCultureAwareKey = <T>(node: Node<T>, key: string): string =>
+const getCultureAwareKey = <T>(node: TrieNode<T>, key: string): string =>
   node.ignoreCasing ? key[0].toLowerCase() : key[0];

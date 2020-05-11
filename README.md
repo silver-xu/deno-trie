@@ -1,4 +1,4 @@
-# Quick Trie [![Build Status](https://travis-ci.org/silver-xu/deno-trie.svg?branch=master)](https://travis-ci.org/silver-xu/quick-trie)
+# Deno Trie [![Build Status](https://travis-ci.org/silver-xu/deno-trie.svg?branch=master)](https://travis-ci.org/silver-xu/quick-trie)
 
 > Deno implementation of Trie for faster searches
 
@@ -16,6 +16,12 @@ For this reason trie search is commonly used in routing algorithms on web server
 
 ## Get Started
 
+### Installation
+Adding the following to deps.ts
+
+```typescript
+export * from "https://raw.githubusercontent.com/silver-xu/deno-trie/master/mod.ts";
+```
 ### Simple Usage
 
 By default, key matching are case insensitive.

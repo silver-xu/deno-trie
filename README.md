@@ -53,10 +53,7 @@ const root = init<number>();
 add(root, 'hello world', 1);
 add(root, 'world class', 2);
 
-console.log(search(root, 'world'));
-[1, 2];
-console.log(search(root, 'hello'));
-[1];
-console.log(search(root, 'class'));
-[2];
+console.log(search(root, 'world')); // [1, 2];
+console.log(search(root, 'hello')); // [1];
+console.log(search(root, 'class')); // [2];
 ```
